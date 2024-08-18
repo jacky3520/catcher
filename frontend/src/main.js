@@ -56,24 +56,30 @@ function updateBackgroundCover() {
     const imageAspect = texture.image.width / texture.image.height;
     const screenAspect = window.innerWidth / window.innerHeight;
 
-    let scale;
     if (screenAspect > imageAspect) {
-        scale = screenAspect / imageAspect;
+        // Screen is wider than the image
+        const scale = screenAspect / imageAspect;
         bgMesh.scale.set(scale, 1, 1);
+        camera.left = -scale;
+        camera.right = scale;
+        camera.top = 1;
+        camera.bottom = -1;
     } else {
-        scale = imageAspect / screenAspect;
+        // Screen is taller than the image
+        const scale = imageAspect / screenAspect;
         bgMesh.scale.set(1, scale, 1);
+        camera.left = -1;
+        camera.right = 1;
+        camera.top = scale;
+        camera.bottom = -scale;
     }
 
-    // Adjust camera to fit the scaled background
-    const verticalFov = 2 * Math.atan(1 / (2 * camera.position.z)) * (180 / Math.PI);
-    const horizontalFov = 2 * Math.atan((screenAspect) / (2 * camera.position.z)) * (180 / Math.PI);
-
-    camera.left = -1 * scale;
-    camera.right = 1 * scale;
-    camera.top = 1 * (screenAspect < imageAspect ? scale : 1);
-    camera.bottom = -1 * (screenAspect < imageAspect ? scale : 1);
     camera.updateProjectionMatrix();
+    
+    // Update catcher position
+    if (catcher) {
+        catcher.position.y = -0.8 * camera.top;
+    }
 }
 
 function createCatcher() {
@@ -161,6 +167,8 @@ function onKeyDown(event) {
 function onWindowResize() {
     renderer.setSize(window.innerWidth, window.innerHeight);
     updateBackgroundCover();
+    // Add this line to update the camera aspect ratio
+    camera.aspect = window.innerWidth / window.innerHeight;
 }
 
 function setupUI() {
