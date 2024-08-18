@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Three.js Game</title>
+    <style>
+        body { margin: 0; font-family: Arial, sans-serif; }
+        canvas { display: block; }
+        #game-ui {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+        }
+        #game-ui > div {
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+        }
+        #game-screen {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+        }
+        button {
+            margin: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+        }
+        input {
+            margin: 10px 0;
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div id="game-ui">
+        <div id="start-menu">
+            <button id="start-game">Start Game</button>
+            <button id="show-leaderboard">Leaderboard</button>
+        </div>
+        <div id="game-screen" style="display: none;">
+            <div id="score">Score: <span id="score-value">0</span></div>
+            <div id="timer">Time: <span id="time-value">60</span></div>
+        </div>
+        <div id="game-over" style="display: none;">
+            <h2>Game Over</h2>
+            <p>Your score: <span id="final-score"></span></p>
+            <input type="text" id="player-name" placeholder="Enter your name">
+            <button id="submit-score">Submit Score</button>
+        </div>
+        <div id="leaderboard" style="display: none;">
+            <h2>Leaderboard</h2>
+            <ul id="leaderboard-list"></ul>
+            <button id="back-to-menu">Back to Menu</button>
+        </div>
+    </div>
+    <script type="module" src="./main.js"></script>
+</body>
+</html>
