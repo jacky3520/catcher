@@ -17,6 +17,13 @@ export class Game {
     init() {
         this.catcher = createCatcher();
         this.scene.add(this.catcher);
+        this.updateCatcherPosition();
+    }
+
+    updateCatcherPosition() {
+        if (this.catcher) {
+            this.catcher.position.y = -0.8 * this.camera.top;
+        }
     }
 
     startGame() {

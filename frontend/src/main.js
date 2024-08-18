@@ -43,9 +43,10 @@ function onKeyDown(event) {
 }
 
 function onWindowResize() {
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    updateBackgroundCover(scene, camera);
+    window.addEventListener('resize', onWindowResize, false);
+    document.addEventListener('keydown', onKeyDown);
     game.updateCatcherPosition();
+    setupUI();
 }
 
 function setupUI() {
