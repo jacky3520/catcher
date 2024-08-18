@@ -78,31 +78,38 @@ function updateBackgroundCover() {
 
 function createCatcher() {
     const texture = new THREE.TextureLoader().load(boatImage);
+    const geometry = new THREE.PlaneGeometry(2, 2);
+    const material = new THREE.MeshBasicMaterial({ map: texture, transparent: true });
+    catcher = new THREE.Mesh(geometry, material);
+    catcher.position.y = -0.8 * camera.top;
+    catcher.scale.set(0.2, 0.2, 1);
+    scene.add(catcher);
+
     texture.onload = () => {
         const aspectRatio = texture.image.width / texture.image.height;
-        const geometry = new THREE.PlaneGeometry(2, 2 / aspectRatio);
-        const material = new THREE.MeshBasicMaterial({ map: texture, transparent: true });
-        catcher = new THREE.Mesh(geometry, material);
-        catcher.position.y = -0.8 * camera.top; // Position relative to camera
-        catcher.scale.set(0.2, 0.2, 1); // Adjust scale as needed
-        scene.add(catcher);
+        catcher.geometry = new THREE.PlaneGeometry(2, 2 / aspectRatio);
+        catcher.position.y = -0.8 * camera.top;
     };
 }
 
 function createItem() {
     const isGood = Math.random() < 0.7;
-    const texture = new THREE.TextureLoader().load(isGood ? GOOD_ITEMS[Math.floor(Math.random() * GOOD_ITEMS.length)] : BAD_ITEMS[Math.floor(Math.random() * BAD_ITEMS.length)]);
+    const texture = new THREE.TextureLoader().load(
+        isGood ? GOOD_ITEMS[Math.floor(Math.random() * GOOD_ITEMS.length)] : BAD_ITEMS[Math.floor(Math.random() * BAD_ITEMS.length)]
+    );
+    const geometry = new THREE.PlaneGeometry(1, 1);
+    const material = new THREE.MeshBasicMaterial({ map: texture, transparent: true });
+    const item = new THREE.Mesh(geometry, material);
+    item.position.x = Math.random() * (camera.right - camera.left) + camera.left;
+    item.position.y = camera.top + 0.5;
+    item.scale.set(0.1, 0.1, 1);
+    item.userData.type = isGood ? 'good' : 'bad';
+    scene.add(item);
+    items.push(item);
+
     texture.onload = () => {
         const aspectRatio = texture.image.width / texture.image.height;
-        const geometry = new THREE.PlaneGeometry(1, 1 / aspectRatio);
-        const material = new THREE.MeshBasicMaterial({ map: texture, transparent: true });
-        const item = new THREE.Mesh(geometry, material);
-        item.position.x = Math.random() * (camera.right - camera.left) + camera.left;
-        item.position.y = camera.top + 0.5; // Start above the visible area
-        item.scale.set(0.1, 0.1, 1); // Adjust scale as needed
-        item.userData.type = isGood ? 'good' : 'bad';
-        scene.add(item);
-        items.push(item);
+        item.geometry = new THREE.PlaneGeometry(1, 1 / aspectRatio);
     };
 }
 
